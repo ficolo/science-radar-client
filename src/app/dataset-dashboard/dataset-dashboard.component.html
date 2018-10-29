@@ -1,0 +1,198 @@
+<div class="grid-container">
+  <h1 class="dataset-title">{{dataSetTitle}}</h1>
+  <h2 class="dataset-subtitle">({{dataSetRange}})</h2>
+  <div style="text-align: center; margin-bottom: 20px;">
+    <mat-button-toggle-group #group="matButtonToggleGroup" aria-label="View selector" value="explore">
+      <mat-button-toggle value="explore" color="primary">
+        <mat-icon>explore</mat-icon>EXPLORAR
+      </mat-button-toggle>
+      <mat-button-toggle value="search" color="primary">
+        <mat-icon>search</mat-icon>BUSCAR
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <mat-grid-list cols="12" rowHeight="155px" *ngIf="group.value === 'explore'">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="count">
+        <mat-icon fontSet="fa" fontIcon="fa-newspaper" class="count-icon"></mat-icon>
+        <div class="count-number">{{basicStats['papersCount'] | number}}</div>
+        <div class="count-label">publicaciones</div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="count">
+        <mat-icon fontSet="fa" fontIcon="fa-graduation-cap" class="count-icon"></mat-icon>
+        <div class="count-number">{{basicStats['authorsCount']|number}}</div>
+        <div class="count-label">autores</div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="count">
+        <mat-icon fontSet="fa" fontIcon="fa-quote-right" class="count-icon"></mat-icon>
+        <div class="count-number">{{basicStats['referencesCount']|number}}</div>
+        <div class="count-label">referencias</div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+      <div class="count">
+        <mat-icon fontSet="fa" fontIcon="fa-key" class="count-icon"></mat-icon>
+        <div class="count-number">{{basicStats['keywordsCount']|number}}</div>
+        <div class="count-label">keywords</div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="8">
+      <div style="text-align: center;">
+        <p>Este dataset fue recolectado usando el servicio de búsqueda de artículos de EuropePMC. Para ello se
+          utilizaron las palabras clave <span *ngFor="let keyword of keywords; let i = index">'{{keyword}}'<span *ngIf="i !== keywords.length - 2 && keywords.length > 1 && i !== keywords.length - 1">,
+            </span><span *ngIf="i === keywords.length - 2"> y </span></span> resultando en {{basicStats['papersCount']
+          - basicStats['citingArticles'] | number}} artículos provenientes de PubMed con acceso abierto entre los años
+          {{startYear}} y {{endYear}} (<a [attr.href]="europePMCUrl" target="_blank">ver consulta en EuropePMC</a>).
+          <span *ngIf="basicStats['citingArticles'] > 0">Además, se obtuvieron {{basicStats['citingArticles']}}
+            artículos de acceso abierto disponibles en PubMed que citan alguna de los artículos incialmente
+            recolectados, para un total en el conjunto de datos de {{basicStats['papersCount']| number}}.</span> Para
+          cada una de las referencias en estos artículos se obtuvo un cojunto de metadatos utilizando el servicio de
+          resouclión de referencias de EuropePMC, siendo estas en total {{basicStats['referencesCount']|number}}
+          referencias.</p>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="12" [rowspan]="3">
+      <mat-card class="dashboard-card">
+        <mat-card-content class="dashboard-card-content">
+          <div>
+            <science-radar-basic-stats-chart style="width: 100%;"></science-radar-basic-stats-chart>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="5" [rowspan]="2">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon fontSet="fa" fontIcon="fa-graduation-cap" mat-card-avatar></mat-icon>
+            <div class="card-title"><span>Top 5 autores con más publicaciones en el dataset</span></div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <science-radar-author-list [authors]="tops['topAuthors']"></science-radar-author-list>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="7" [rowspan]="4">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon fontSet="fa" fontIcon="fa-quote-right" mat-card-avatar></mat-icon>
+            <div class="card-title"><span>Top 5 publicaciones más citadas en el dataset</span></div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <science-radar-paper-list [papers]="tops['topPapers']"></science-radar-paper-list>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="5" [rowspan]="2">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon fontSet="fa" fontIcon="fa-tags" mat-card-avatar></mat-icon>
+            <div class="card-title"><span>Top 5 términos de la <i>Disease Ontology</i> más usados</span></div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <science-radar-term-list [terms]="tops['topTerms']"></science-radar-term-list>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="12" [rowspan]="1">
+      <div style="text-align: center">
+        <h2>Análisis de Frentes de Investigación</h2>
+        <p>Science Radar implementa un flujo de trabajo que parte de la recolección y pre-procesamiento de información
+          hasta la generación de un reporte unificado que facilita el análisis de frentes de investigación y permite su
+          exploración a través de una interfaz gráfica haciendo uso de técnicas de visualización de datos científicos.
+          El modelo implementado parte de la relación temporal observada por Guo et. al.(2011) según la cual en un
+          frente Inicialmente, nuevos autores entran al área de investigación de forma acelerada, posteriormente, la
+          aumenta interdisciplinaridad de las referencias a artículos y por último ocurre un cambio súbito en la
+          frecuencia de un grupo de palabras específicas.</p>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="12" [rowspan]="5">
+      <mat-card class="dashboard-card">
+        <mat-card-content class="dashboard-card-content">
+          <div>
+            <science-radar-summary-chart style="width: 100%;"></science-radar-summary-chart>
+            <p>Gráfica que muestra el crecimiento incremental en el número de autores del dataset (rojo), junto con el
+              crecimiento de nivel interdisciplineriedad de las referencias (verde). Éste último se aproxima utilizando
+              una ténica de clustering sobre las anotaciones semánticas del dataset año a año, utilizando para todos
+              los años los mismos parámetros de calidad de los clusters generados. Además, se muestra la ráfaga de
+              anotaciones (azul) que incluyen el término más relevante del conjunto de datos.</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="12" [rowspan]="6">
+      <mat-card class="dashboard-card">
+        <mat-card-content class="dashboard-card-content">
+          <div>
+            <science-radar-analysis-explorer style="width: 100%;" [class.mat-elevation-z8]="true"></science-radar-analysis-explorer>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="12" rowHeight="100px" *ngIf="group.value === 'search'">
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="8" [rowspan]="1">
+      <div style="width: 100%; height: 100%">
+        <div style="width: 100%;">
+          <mat-form-field style="width: 100%;">
+            <input matInput placeholder="BUSCAR PUBLICACIONES SOBRE {{dataSetName | uppercase}}" [ngModel]="query"
+              (ngModelChange)="onQueryChange($event)">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+        <div style="width: 100%;">
+
+        </div>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2" [rowspan]="1">
+
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="12" *ngFor="let result of searchResults" [rowspan]="getRowSpan(result)">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            <div class="card-title"><a [attr.href]="result['_source'].fullTextUrlList[0]['url']" target="_blank">{{result['_source'].title}}</a></div>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <h5>{{result['_source'].authorString}}</h5>
+          <h5>{{result['_source'].journalInfo.journal.title}} ({{result['_source'].pubYear}})</h5>
+          <p>{{result['_source'].abstractText}}</p>
+        </mat-card-content>
+      </mat-card>
+      <!-- <div style="width: 90%; height: 100%">
+          <div style="width: 100%;">
+            <h4>{{result['_source'].title}}</h4>
+            <h5>{{result['_source'].authorString}}</h5>
+            <h5>{{result['_source'].journalInfo.journal.title}} ({{result['_source'].pubYear}})</h5>
+            <p>{{result['_source'].abstractText | truncate : 1000 : true}}</p>
+          </div>
+        </div> -->
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

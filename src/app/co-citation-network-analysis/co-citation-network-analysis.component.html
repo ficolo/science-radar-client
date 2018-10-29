@@ -1,0 +1,24 @@
+<highcharts-chart
+  [Highcharts]="Highcharts"
+  [options]="chartOptions"
+  [oneToOne]="true"
+  style="max-width: 1200px; height: 500px; display: block;"
+  [(update)]="update"
+></highcharts-chart>
+<div>
+  <mat-slider
+  [max]="timePoints.length - 1"
+  [min]="0"
+  [step]="1"
+  [displayWith]="getLabel"
+  [disabled]="disabledSlider"
+  [thumbLabel]="true"
+  [tickInterval]="1"
+  [(ngModel)]="selectedDate"
+  (change)="sliderChanged($event)"
+  >
+  </mat-slider>
+  <button mat-raised-button (click)="play()">PLAY</button>
+</div>
+
+<div>Selected period from {{timePoints[0]}} to {{timePoints[selectedDate]}}</div>

@@ -1,0 +1,7 @@
+<mat-list>
+  <mat-list-item *ngFor="let author of authors; let i = index">
+    <span>{{i + 1 }}.&nbsp;</span><a [attr.href]="'http://europepmc.org/search?query=%28AUTH:%22' + author.name + '%22%29&page=1'"
+      target="_blank">{{author.name | titlecase}}</a><span>&nbsp;({{author.paperCount}} papers)
+    </span>
+  </mat-list-item>
+</mat-list>

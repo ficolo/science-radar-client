@@ -1,0 +1,15 @@
+<mat-list>
+    <mat-list-item *ngFor="let term of terms; let i = index">
+      <span>{{i + 1 }}.&nbsp;</span><a [attr.href]="term.link"
+        target="_blank">{{term.label | titlecase}}</a><span>&nbsp;({{term.usedByCount}} papers)
+      </span>
+    </mat-list-item>
+  </mat-list>
+
+<!-- <ol>
+  <li  *ngFor="let term of terms; let i = index">
+      <a [attr.href]="term.link"
+      target="_blank">{{term.label | titlecase}}</a><span>&nbsp;({{term.usedByCount}} papers)
+    </span>
+  </li>
+</ol> -->

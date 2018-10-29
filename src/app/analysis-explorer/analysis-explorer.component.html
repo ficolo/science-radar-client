@@ -1,0 +1,41 @@
+<mat-tab-group>
+  <mat-tab label="Red de coautoría">
+    <div class="options-container">
+      <mat-button-toggle-group name="typeView" aria-label="Type View" #group1="matButtonToggleGroup">
+        <mat-button-toggle value="analysis" checked="true">Analysis view</mat-button-toggle>
+        <mat-button-toggle value="graph">Graph view</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div style="text-align: center;">
+      <science-radar-co-authorship-network *ngIf="group1.value === 'graph'" dataset="zika" network="coauthorship"></science-radar-co-authorship-network>
+      <science-radar-co-authorship-network-analysis *ngIf="group1.value === 'analysis'"></science-radar-co-authorship-network-analysis>
+    </div>
+  </mat-tab>
+  <mat-tab label="Análisis de interdisciplinariedad">
+    <div style="text-align: center;">
+      <science-radar-interdisciplinarity-analysis></science-radar-interdisciplinarity-analysis>
+    </div>
+  </mat-tab>
+  <mat-tab label="Ráfaga de anotaciones">
+    <science-radar-annotation-burst></science-radar-annotation-burst>
+  </mat-tab>
+  <mat-tab label="Red de cocitación">
+    <div class="options-container">
+      <mat-button-toggle-group name="typeView" aria-label="Type View" #group2="matButtonToggleGroup">
+        <mat-button-toggle value="analysis" checked="true">Analysis view</mat-button-toggle>
+        <mat-button-toggle value="graph">Graph view</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div style="text-align: center;">
+      <science-radar-co-authorship-network *ngIf="group2.value === 'graph'" dataset="zika" network="cocitation"></science-radar-co-authorship-network>
+      <science-radar-co-citation-network-analysis *ngIf="group2.value === 'analysis'"></science-radar-co-citation-network-analysis>
+      <p>La relevancia de una referencia en la red co-citación se ve representado por el grado de co-citación y el
+        puntaje obtenido tras ejecutar el algoritmo HITS sobre la red en un momento de tiempo determinado. Use el
+        slider para visualizar el cambio de la red año a año y use el boton PLAY para ver una animación del cambio en
+        el comportamiento de la red de co-citación durante el periodo de teimpo analizado.</p>
+      <p>Con el fin de construir la red de co-citación y el análisis de interdisciplinariedad fue necesario filtrar las
+        referencias a aquellas que contenía un id (p.ej. PubMed ID, PMCId, DOI) para un total de XXX citaciones
+        identificadas.</p>
+    </div>
+  </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,10 @@
+<highcharts-chart
+  [Highcharts]="Highcharts"
+  [options]="chart"
+  [oneToOne]="true"
+  style="width: 100%; height: 600px; display: block;"
+></highcharts-chart>
+<div>
+  <p>Número de total autores: {{vertexNumber | number}}</p>
+  <p>Número de total conexiones: {{edgeNumber | number}}</p>
+</div>
